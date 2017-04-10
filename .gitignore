@@ -1,0 +1,13 @@
+.classpath
+target
+.project
+.settings
+.cache
+*.iml
+.idea
+tmp_0000
+.gitreview
+
+# Ignore Vim droppings
+*.sw[onp]
+*.vim
