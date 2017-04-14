@@ -1,11 +1,18 @@
 package io.garlicbulbxian.calendar;
 
-public class InvitationEvent implements Event {
-    CalendarManager.Meeting meeting;
-    User notifiedUser;
-
+public class InvitationEvent extends Event {
     public InvitationEvent(CalendarManager.Meeting meeting, User notifiedUser) {
-        this.meeting = meeting;
-        this.notifiedUser = notifiedUser;
+        super(meeting, notifiedUser);
     }
+
+    public long getDelay() {
+        return 0;
+    }
+
+    public String getMessage() {
+        String message = "Invitation"
+                + "";
+        return message;
+    }
+
 }

@@ -29,10 +29,15 @@ public class CalendarManager {
         // create the meeting object and add it to the managed list
         Meeting meeting = new Meeting(organizer, recipients, scheduling);
 
-        // send invitation events
+        // create invitation events and reminder events
         for (User user: meeting.recipients) {
-            Event event = new InvitationEvent(meeting, user);
-            EventProcessor.getInstance().sendEvent(event);
+            Event invitationEvent = new InvitationEvent(meeting, user);
+            EventProcessor.getInstance().processEvent(invitationEvent);
+
+            // TODO: figure out the right delay time to send the reminder
+            long delay = 0L;
+            Event reminderEvent = new ReminderEvent(meeting, user, delay);
+            EventProcessor.getInstance().processEvent(reminderEvent);
         }
 
         return meeting;
@@ -45,9 +50,16 @@ public class CalendarManager {
 
         meeting.addRecipient(newRecipient);
         Event event = new InvitationEvent(meeting, newRecipient);
-        EventProcessor.getInstance().sendEvent(event);
+        EventProcessor.getInstance().processEvent(event);
     }
 
+    public void removeRecipient(Meeting meeting, User recipient) {
+        if (meeting.recipients.contains(recipient)) {
+            meeting.removeRecipient(recipient);
+            Event event = new CancelEvent(meeting, recipient);
+            EventProcessor.getInstance().processEvent(event);
+        }
+    }
 
     public class Meeting {
         // auto increment internal id
